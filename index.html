@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="MovieMax - Watch & Download Movies Free">
+    <meta name="theme-color" content="#0a0a0a">
+    <title>MovieMax - Watch Movies Free</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="app-header">
+        <div class="header-left">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z"/>
+                    </svg>
+                </div>
+                <span class="logo-text">Movie<span class="accent">Max</span></span>
+            </div>
+        </div>
+        <div class="header-right">
+            <button class="header-btn" id="refreshBtn" title="Refresh">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M23 4v6h-6M1 20v-6h6"/>
+                    <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
+                </svg>
+            </button>
+            <button class="header-btn" id="searchToggle" title="Search">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/>
+                    <path d="M21 21l-4.35-4.35"/>
+                </svg>
+            </button>
+            <button class="menu-toggle" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Search Bar -->
+    <div class="search-bar" id="searchBar">
+        <div class="search-input-wrapper">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/>
+                <path d="M21 21l-4.35-4.35"/>
+            </svg>
+            <input type="text" id="searchInput" placeholder="Search movies...">
+            <button class="search-close" id="searchClose">×</button>
+        </div>
+    </div>
+
+    <!-- Side Menu (SIMPLIFIED - No Trending/Old Movies) -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+    <nav class="side-menu" id="sideMenu">
+        <div class="menu-header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z"/>
+                    </svg>
+                </div>
+                <span class="logo-text">Movie<span class="accent">Max</span></span>
+            </div>
+            <button class="menu-close" id="menuClose">×</button>
+        </div>
+        <div class="menu-content">
+            <div class="menu-section">
+                <h3>Menu</h3>
+                <a href="#" class="menu-item active" data-page="home">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                    </svg>
+                    <span>Home</span>
+                </a>
+                <a href="watchlater.html" class="menu-item" data-page="watchlater">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M17 3H7c-1.1 0-1.99.9-1.99 2L5 21l7-3 7 3V5c0-1.1-.9-2-2-2z"/>
+                    </svg>
+                    <span>Watch Later</span>
+                    <span class="menu-badge" id="watchLaterBadge">0</span>
+                </a>
+            </div>
+            <div class="menu-section">
+                <h3>Categories</h3>
+                <a href="#" class="menu-item category-item active" data-category="all">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"/>
+                    </svg>
+                    <span>All Movies</span>
+                </a>
+                <div id="dynamicCategories"></div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Trending Slider (Only "Trending Movies" - no 8.0+ text) -->
+        <section class="trending-section">
+            <div class="section-label">
+                <span class="fire-icon"></span>
+                <span>🔥TRENDING</span>
+            </div>
+            <div class="hero-slider" id="heroSlider">
+                <div class="slider-track" id="sliderTrack"></div>
+                <div class="slider-dots" id="sliderDots"></div>
+            </div>
+        </section>
+
+        <!-- Poster Row -->
+        <section class="poster-row-section">
+            <div class="section-header">
+                <h2>NEWLY Added</h2>
+            </div>
+            <div class="poster-row" id="posterRow"></div>
+        </section>
+
+        <!-- All Movies Grid -->
+        <section class="movies-section">
+            <div class="section-header">
+                <h2 id="sectionTitle">LATEST Releases</h2>
+                <span class="movie-count" id="movieCount">0 Movies</span>
+            </div>
+            
+            <div class="loading-container" id="loadingContainer">
+                <div class="loader">
+                    <div class="loader-ring"></div>
+                    <div class="loader-ring"></div>
+                    <div class="loader-ring"></div>
+                </div>
+                <p>Loading movies...</p>
+            </div>
+
+            <div class="movies-grid" id="moviesGrid"></div>
+
+            <div class="load-more-container" id="loadMoreContainer">
+                <button class="load-more-btn" id="loadMoreBtn">
+                    <span>Load More</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="empty-state hidden" id="emptyState">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z"/>
+                </svg>
+                <h3>No Movies Found</h3>
+                <p>Try a different search</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Movie Detail Modal -->
+    <div class="movie-modal" id="movieModal">
+        <div class="modal-backdrop" id="modalBackdrop"></div>
+        <div class="modal-container">
+            <button class="modal-close-btn" id="modalCloseBtn">×</button>
+            
+            <div class="modal-media">
+                <img src="" alt="" id="modalPosterBg" class="modal-poster-bg">
+                <div class="modal-poster-overlay"></div>
+                <div class="play-button" id="playTrailerBtn">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="modal-info">
+                <div class="modal-poster-thumb">
+                    <img src="" alt="" id="modalPosterThumb">
+                </div>
+                <div class="modal-details">
+                    <h1 class="modal-title" id="modalTitle">Movie Title</h1>
+                    <div class="modal-meta">
+                        <span class="meta-item rating" id="modalRating">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                            <span>8.5</span>
+                        </span>
+                        <span class="meta-item" id="modalYear">2024</span>
+                        <span class="meta-item" id="modalDuration">120 min</span>
+                        <span class="meta-item category" id="modalCategory"></span>
+                    </div>
+                    <p class="modal-story" id="modalStory">Movie description...</p>
+                    
+                    <div class="modal-actions">
+                        <button class="action-btn watchlater-btn" id="addWatchLaterBtn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+                            </svg>
+                            <span>Watch Later</span>
+                        </button>
+                        <button class="action-btn share-btn" id="shareBtn">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/>
+                            </svg>
+                            <span>Share</span>
+                        </button>
+                    </div>
+
+                    <div class="download-section">
+                        <h3>
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+                            </svg>
+                            Download Links
+                        </h3>
+                        
+                        <div class="download-locked" id="downloadLocked">
+                            <div class="lock-animation">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+                                </svg>
+                            </div>
+                            <p>Watch a short video to unlock downloads</p>
+                            <button class="unlock-btn" id="unlockBtn">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M8 5v14l11-7z"/>
+                                </svg>
+                                <span>Watch Ad to Unlock</span>
+                            </button>
+                        </div>
+
+                        <div class="download-unlocked hidden" id="downloadUnlocked">
+                            <div class="download-buttons" id="downloadButtons"></div>
+                            <div class="watch-online">
+                                <button class="watch-btn" id="watchOnlineBtn">
+                                    <svg viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M8 5v14l11-7z"/>
+                                    </svg>
+                                    <span>Watch Online</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="JmPJX!NHhm1uror.js"></script>
+</body>
+</html>
